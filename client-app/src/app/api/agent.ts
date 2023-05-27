@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { Activity } from '../layout/models/activity';
-import { promiseHooks } from 'v8';
+import { Activity } from '../models/activity';
 
 const sleep = (delay:number)=>{
     return new Promise((resolve)=>{
