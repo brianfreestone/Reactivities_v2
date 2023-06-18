@@ -10,6 +10,7 @@ export default function Navbar() {
                     <img src="/assets/logo.png" alt="logo" className='menu-header'/>
                     Reactivities
                 </Menu.Item>
+                <Menu.Item as={NavLink} to='/categories' name='Categories' />
                 <Menu.Item as={NavLink} to='/activities' name='Activities' />
                 <Menu.Item as={NavLink} to='/errors' name='Errors' />
                 <Menu.Item >

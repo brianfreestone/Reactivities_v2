@@ -1,0 +1,11 @@
+.react-datepicker-wrapper {
+    width:100%;
+}
+
+.react-datepicker {
+    width: 300px;
+}
+
+.react-datepicker__month-container {
+    float:left
+}

@@ -3,6 +3,7 @@ import { Activity } from '../models/activity';
 import { toast } from 'react-toastify';
 import { router } from '../router/Routes';
 import { store } from '../stores/store';
+import { Category } from '../models/category';
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -19,13 +20,13 @@ axios.interceptors.response.use(async response => {
     const { data, status, config } = error.response as AxiosResponse;
     switch (status) {
         case 400:
-            if (config.method ==='get' && data.errors.hasOwnProperty('id')) {
+            if (config.method === 'get' && data.errors.hasOwnProperty('id')) {
                 router.navigate('/not-found');
             }
             if (data.errors) {
                 const modelStateErrors = [];
-                for(const key in data.errors){
-                    if(data.errors[key]){
+                for (const key in data.errors) {
+                    if (data.errors[key]) {
                         modelStateErrors.push(data.errors[key])
                     }
                 }
@@ -68,8 +69,17 @@ const Activities = {
     delete: (id: string) => requests.del<void>(`/activities/${id}`)
 }
 
+const Categories = {
+    list: () => requests.get<Category[]>('/categories'),
+    details: (id: string) => requests.get<Category>(`/categories/${id}`),
+    create: (category: Category) => requests.post<void>('/categories', category),
+    update: (category: Category) => requests.put<void>(`/categories/${category.id}`, category),
+    delete: (id: string) => requests.del<void>(`/categories/${id}`),
+}
+
 const agent = {
-    Activities
+    Activities,
+    Categories
 }
 
 export default agent;
