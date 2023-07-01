@@ -4,9 +4,13 @@ import agent from "../api/agent";
 import { store } from "./store";
 import { RouterProvider } from "react-router-dom";
 import { router } from "../router/Routes";
+import { Profile } from "../models/profile";
+import { prettyFormat } from "@testing-library/react";
 
 export default class UserStore {
     user: User | null = null;
+    loading: boolean = false;
+    profile: Profile | null = null;
 
     constructor() {
         makeAutoObservable(this);
@@ -14,6 +18,12 @@ export default class UserStore {
 
     get isLoggedIn() {
         return !!this.user;
+    }
+
+    setDisplayName = (name:string) =>{
+        if(this.user) {
+            this.user.displayName = name;
+        }
     }
 
     login = async (creds: UserFormValues) => {
@@ -43,6 +53,8 @@ export default class UserStore {
             throw error;
         }
     }
+
+
 
     setImage = (image: string) => {
         if (this.user) {
