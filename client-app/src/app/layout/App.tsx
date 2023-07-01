@@ -8,7 +8,7 @@ import HomePage from '../../features/home/HomePage';
 import { ToastContainer } from 'react-toastify'
 import { useStore } from '../stores/store';
 import LoadingComponent from './LoadingComponent';
-import ModalContainer from '../common/form/Modals/ModalContainer';
+import ModalContainer from '../common/modals/ModalContainer';
 
 function App() {
 
