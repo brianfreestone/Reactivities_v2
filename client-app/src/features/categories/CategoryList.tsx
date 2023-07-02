@@ -18,7 +18,7 @@ export default observer(function CategoryList() {
 
     useEffect(() => {
 
-        if (categoryOptionsRegistry.size < 1) {
+        if (categoryOptionsRegistry.size <= 1) {
             loadCategories();
             setCategories(allCategories);
         }

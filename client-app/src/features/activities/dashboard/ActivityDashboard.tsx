@@ -8,14 +8,18 @@ import ActivityFilters from './ActivityFilters';
 
 export default observer(function ActivityDashboard() {
 
-    const {activityStore} = useStore();
-    const {loadActivities, activityRegistry}= activityStore
+    const { activityStore, categoryStore } = useStore();
+    const { loadActivities, activityRegistry } = activityStore
+    const { loadCategories, categoryOptionsRegistry} = categoryStore;
     useEffect(() => {
         if (activityRegistry.size <= 1) {
             loadActivities();
-                    }
+        }
+        if (categoryOptionsRegistry.size <= 1) {
+            loadCategories();
+        }
     }, [loadActivities, activityRegistry.size]);
-  
+
     if (activityStore.loadingInitial) return <LoadingComponent content='Loading activities...' />
 
     return (
@@ -24,7 +28,7 @@ export default observer(function ActivityDashboard() {
                 <ActivityList />
             </Grid.Column>
             <Grid.Column width={6}>
-                <ActivityFilters/>
+                <ActivityFilters />
             </Grid.Column>
         </Grid>
     )
