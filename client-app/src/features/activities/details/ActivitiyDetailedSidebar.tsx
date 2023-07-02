@@ -8,8 +8,8 @@ interface Props {
     activity: Activity;
 }
 
-export default observer(function ActivityDetailedSidebar({ activity:{attendees,host} }: Props) {
-    if(!attendees) return null;
+export default observer(function ActivityDetailedSidebar({ activity: { attendees, host } }: Props) {
+    if (!attendees) return null;
     return (
         <>
             <Segment
@@ -18,7 +18,7 @@ export default observer(function ActivityDetailedSidebar({ activity:{attendees,h
                 attached='top'
                 secondary
                 inverted
-                color='teal'
+                color='blue'
             >
                 {attendees.length} {attendees.length === 1 ? "Person" : "People"} Going
             </Segment>
@@ -29,7 +29,7 @@ export default observer(function ActivityDetailedSidebar({ activity:{attendees,h
                             {attendee.username === host?.username && (
                                 <Label
                                     style={{ position: 'absolute' }}
-                                    color='orange'
+                                    color='green'
                                     ribbon='right'
                                 >
                                     Host
@@ -42,7 +42,8 @@ export default observer(function ActivityDetailedSidebar({ activity:{attendees,h
                                 <Item.Header as='h3'>
                                     <Link to={`/profiles/${attendee.username}`}>{attendee.displayName}</Link>
                                 </Item.Header>
-                                <Item.Extra style={{ color: 'orange' }}>Following</Item.Extra>
+                                {attendee.following &&
+                                <Item.Extra style={{ color: 'orange' }}>Following</Item.Extra>}
                             </Item.Content>
                         </Item>
                     ))}

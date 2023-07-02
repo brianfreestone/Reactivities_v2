@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { Category } from "../../../app/models/category";
-import MyTextInput from "../../../app/common/form/MyTextInput";
+import { Category } from "../../app/models/category";
+import MyTextInput from "../../app/common/form/MyTextInput";
 import { Button, Form } from "semantic-ui-react";
-import { useStore } from "../../../app/stores/store";
+import { useStore } from "../../app/stores/store";
 import * as Yup from 'yup';
-import ConfirmDeleteModal from "../../categories/DeleteModal";
-import LoadingComponent from "../../../app/layout/LoadingComponent";
+import ConfirmDeleteModal from "./DeleteModal";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 
 interface Props {
     category?: Category | undefined;

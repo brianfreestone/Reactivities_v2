@@ -6,7 +6,7 @@ import LoadingComponent from "../../app/layout/LoadingComponent";
 import CategoryListItem from "./CategoryListItem";
 import { Button, Grid } from "semantic-ui-react";
 import { Category } from "../../app/models/category";
-import CategoryForm from "../activities/form/CategoryForm";
+import CategoryForm from "./CategoryForm";
 
 export default observer(function CategoryList() {
     const { categoryStore } = useStore();
