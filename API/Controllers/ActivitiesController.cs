@@ -1,4 +1,5 @@
 ﻿using Application.Activities;
+using Application.Core;
 using Domain;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -11,11 +12,11 @@ namespace API.Controllers
     public class ActivitiesController : BaseApiController
     {
         [HttpGet] //api/activities
-        public async Task<IActionResult> GetActivities()
+        public async Task<IActionResult> GetActivities([FromQuery] ActivityParams param)
         {
-            var result = await Mediator.Send(new List.Query());
+            var result = await Mediator.Send(new List.Query { Params = param });
 
-            return HandleResult(result);
+            return HandlePagedResult(result);
         }
 
         [HttpGet("{id}")] //api/activities/guid
@@ -34,7 +35,7 @@ namespace API.Controllers
             return HandleResult(result);
         }
 
-        [Authorize(Policy ="IsActivityHost")]
+        [Authorize(Policy = "IsActivityHost")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditActivity(Guid id, Activity actitvity)
         {
@@ -53,7 +54,7 @@ namespace API.Controllers
 
         [HttpPost("{id}/attend")]
         public async Task<IActionResult> Attend(Guid id)
-        { 
+        {
             return HandleResult(await Mediator.Send(new UpdateAttendance.Command { Id = id }));
         }
     }
