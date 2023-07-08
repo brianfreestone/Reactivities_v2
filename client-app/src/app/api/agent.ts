@@ -5,7 +5,7 @@ import { router } from '../router/Routes';
 import { store } from '../stores/store';
 import { Category } from '../models/category';
 import { User, UserFormValues } from '../models/user';
-import { Photo, Profile } from '../models/profile';
+import { Photo, Profile, UserActivity } from '../models/profile';
 import { PaginatedResult } from '../models/pagination';
 
 const sleep = (delay: number) => {
@@ -83,7 +83,8 @@ const Activities = {
     create: (activity: ActivityFormValues) => requests.post<void>('/activities', activity),
     update: (activity: ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`, activity),
     delete: (id: string) => requests.del<void>(`/activities/${id}`),
-    attend: (id: string) =>requests.post<void>(`/activities/${id}/attend`, {})
+    attend: (id: string) =>requests.post<void>(`/activities/${id}/attend`, {}),
+
 }
 
 const Account = {
@@ -113,7 +114,8 @@ const Profiles = {
     deletePhoto: (id:string) => requests.del(`/photos/${id}`),
     updateProfile: (profile: Partial<Profile>) => requests.put<void>('/profiles', profile),
     updateFollowing: (username: string) => requests.post(`/follow/${username}`, {}),
-    listFollowings: (username: string, predicate: string) => requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
+    listFollowings: (username: string, predicate: string) => requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+    listActivities: (username: string, predicate: string) =>requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
 }
 
 const agent = {
