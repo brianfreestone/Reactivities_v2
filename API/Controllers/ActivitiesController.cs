@@ -19,6 +19,8 @@ namespace API.Controllers
             return HandlePagedResult(result);
         }
 
+
+
         [HttpGet("{id}")] //api/activities/guid
         public async Task<IActionResult> GetActivity(Guid id)
         {
@@ -57,5 +59,6 @@ namespace API.Controllers
         {
             return HandleResult(await Mediator.Send(new UpdateAttendance.Command { Id = id }));
         }
+
     }
 }

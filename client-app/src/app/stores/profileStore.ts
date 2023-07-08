@@ -1,5 +1,5 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
-import { Photo, Profile } from "../models/profile";
+import { Photo, Profile, UserActivity } from "../models/profile";
 import agent from "../api/agent";
 import { store } from "./store";
 
@@ -11,17 +11,19 @@ export default class ProfileStore {
     deleteLoading = false;
     loading = false;
     followings: Profile[] = [];
+    activities: UserActivity[] = [];
     loadingFollowings = false;
+    loadingActivities = false;
     activeTab = 0;
 
     constructor() {
         makeAutoObservable(this);
 
         reaction(
-            () => this.activeTab, 
-            activeTab =>{
-                if (activeTab === 3 || activeTab === 4){
-                    const predicate = activeTab === 3? 'followers' : 'following';
+            () => this.activeTab,
+            activeTab => {
+                if (activeTab === 3 || activeTab === 4) {
+                    const predicate = activeTab === 3 ? 'followers' : 'following';
                     this.loadFollowings(predicate);
 
                 } else {
@@ -31,7 +33,7 @@ export default class ProfileStore {
         )
     }
 
-    setActiveTab = (activeTab : any) =>{
+    setActiveTab = (activeTab: any) => {
         this.activeTab = activeTab;
     }
 
@@ -151,8 +153,8 @@ export default class ProfileStore {
                     following ? this.profile.followersCount++ : this.profile.followersCount--;
                     this.profile.following = !this.profile.following;
                 }
-                if(this.profile && this.profile.username === store.userStore.user?.username){
-                    following? this.profile.followingCount ++ :this.profile.followingCount --;
+                if (this.profile && this.profile.username === store.userStore.user?.username) {
+                    following ? this.profile.followingCount++ : this.profile.followingCount--;
                 }
 
                 this.followings.forEach(profile => {
@@ -176,15 +178,32 @@ export default class ProfileStore {
 
         try {
             const followings = await agent.Profiles.listFollowings(this.profile!.username, predicate);
-            runInAction(()=>{
+            runInAction(() => {
                 this.followings = followings;
-                
+
             })
         } catch (error) {
-            
+
+        } finally {
+            runInAction(() => {
+                this.loadingFollowings = false;
+            })
+        }
+    }
+
+    loadUserActivities = async (username: string, predicate?: string) => {
+        this.loadingActivities = true;
+
+        try {
+            const activities = await agent.Profiles.listActivities(username, predicate!);
+            runInAction(()=>{
+                this.activities = activities;
+            })
+        } catch (error) {
+            console.log(error)
         } finally {
             runInAction(()=>{
-                this.loadingFollowings = false;
+                this.loadingActivities = false;
             })
         }
     }
