@@ -29,6 +29,7 @@ export default class UserStore {
     login = async (creds: UserFormValues) => {
         try {
             const user = await agent.Account.login(creds);
+           // console.log('user - ', user)
             store.commonStore.setToken(user.token);
             runInAction(() => {
                 this.user = user

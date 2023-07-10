@@ -5,12 +5,11 @@ import { useStore } from "../../app/stores/store";
 import { SyntheticEvent, useState } from "react";
 import PhotoUploadWidget from "../../app/common/imageUpload/PhotoUploadWidget";
 
-interface Props {
-    profile: Profile;
-}
 
-export default observer(function ProfilePhotos({ profile }: Props) {
-    const { profileStore: { isCurrentUser, uploadPhoto, uploading, mainLoading, setMainPhoto, deleteLoading, deletePhoto } } = useStore();
+
+
+export default observer(function ProfilePhotos() {
+    const { profileStore: { isCurrentUser, uploadPhoto, uploading, mainLoading, setMainPhoto, deleteLoading, deletePhoto, profile } } = useStore();
     const [addPhotoMode, setAddPhotoMode] = useState(false);
     const [mainTarget, setMainTarget] = useState('');
     const [deleteTarget, setDeleteTarget] = useState('');
@@ -48,7 +47,7 @@ export default observer(function ProfilePhotos({ profile }: Props) {
                         <PhotoUploadWidget uploadPhoto={handlePhotoUpload} loading={uploading} />
                     ) : (
                         <Card.Group itemsPerRow={5}>
-                            {profile.photos?.map((photo: Photo) => (
+                            {profile!.photos?.map((photo: Photo) => (
                                 <Card key={photo.id}>
                                     <Image src={photo.url} />
                                     {isCurrentUser && (

@@ -3,13 +3,11 @@ import { Button, Grid, Header, Tab } from "semantic-ui-react";
 import { Profile } from "../../app/models/profile";
 import { useState } from "react";
 import ProfileEditForm from "./ProfileEditForm";
+import { useStore } from "../../app/stores/store";
 
-interface Props {
-    profile: Profile;
-}
-
-export default function ProfileAbout({ profile }: Props) {
-
+export default function ProfileAbout() {
+    const { profileStore } = useStore();
+    const { isCurrentUser, profile } = profileStore
     const [isEditing, setIsEditing] = useState(false);
 
     function handleClick() {
@@ -20,15 +18,17 @@ export default function ProfileAbout({ profile }: Props) {
         <Tab.Pane>
             <Grid>
                 <Grid.Column width={16}>
-                    <Header floated='left' icon='user' content={`About ${profile.displayName}`} />
-                    <Button floated='right' content={isEditing ? "Cancel" : "Edit Profile"} onClick={handleClick} />
+                    <Header floated='left' icon='user' content={`About ${profile!.displayName}`} />
+                    {isCurrentUser && (
+                        <Button floated='right' content={isEditing ? "Cancel" : "Edit Profile"} onClick={handleClick} />
+                    )}
                 </Grid.Column>
                 <Grid.Column width={16}>
                     {isEditing ? (
                         <ProfileEditForm setEditMode={setIsEditing} />
                     ) : (
-                        <span style={{whiteSpace: 'pre-wrap'}}>
-                            {profile.bio}
+                        <span style={{ whiteSpace: 'pre-wrap' }}>
+                            {profile!.bio}
                         </span>
                     )
                     }

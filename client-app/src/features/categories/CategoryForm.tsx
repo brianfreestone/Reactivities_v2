@@ -52,7 +52,7 @@ export default observer(function CategoryForm({ category: selectedCategory, togg
 
         <Form onSubmit={handleSubmit} className='ui form' autoComplete='off'>
             <Form.Input placeholder='Category Name' name='categoryName' value={ category?.categoryName} onChange={handleInputChange}/>
-            <ConfirmDeleteModal category={category}/>
+            <ConfirmDeleteModal category={category} disabled={mode === 'create'? true: false} toggleView={toggleView}/>
             <Button loading={loading} floated='right' positive type='submit' content='Submit' />
             
             <Button floated='right' type='submit' content='Cancel' onClick={toggleView} />

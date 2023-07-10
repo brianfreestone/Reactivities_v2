@@ -124,6 +124,7 @@ export default class CategoryStore {
             await agent.Categories.create(category);
             runInAction(() => {
                 // this.categoryRegistry!.set(category.id, category);
+                this.categories.push(category);
                 this.selectedCategory = category;
                 // this.editMode = false;
                 this.loading = false;
@@ -136,12 +137,18 @@ export default class CategoryStore {
         }
     }
 
-    deleteCategory = async (id: string) => {
+    deleteCategory = async (category: Category) => {
         this.loading = true;
         try {
-            await agent.Categories.delete(id);
+            //console.log('before - ', this.categories)
+            await agent.Categories.delete(category.id);
+            
             runInAction(()=>{
-                this.categoryRegistry.delete(id);
+                var foo = this.categories.indexOf(category);
+               // console.log(foo)
+                this.categories = this.categories.filter(c => c !== category)
+                //console.log('after - ', this.categories)
+                this.categoryRegistry.delete(category.id);
                 this.loading=false;
             })
         } catch (error) {

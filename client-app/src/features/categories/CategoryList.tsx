@@ -17,8 +17,8 @@ export default observer(function CategoryList() {
     const [categories, setCategories]= useState<Category[]>([]);
 
     useEffect(() => {
-
-        if (categoryOptionsRegistry.size <= 1) {
+        //console.log(categoryOptionsRegistry.size)
+        if (categoryOptionsRegistry.size === 0) {
             loadCategories();
             setCategories(allCategories);
         }
@@ -67,7 +67,7 @@ export default observer(function CategoryList() {
             <Grid>
                 <Grid.Column width='6'>
                 <Button disabled={showEditForm} content='Create Category' color="blue" onClick={handleCreateForm}/>
-                    {categories.map((category:Category) => (
+                    {allCategories.map((category:Category) => (
                         <CategoryListItem key={category.id} category={category} handleSelectedCategory={handleSelectedCategory}  handleEditToggle={handleEditToggle}  disabled = {showCreateForm} />
                     ))}
                 </Grid.Column>

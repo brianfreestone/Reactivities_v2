@@ -14,7 +14,7 @@ const sleep = (delay: number) => {
     })
 }
 
-axios.defaults.baseURL = 'http://localhost:5000/api';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;// 'http://localhost:5000/api';
 
 axios.interceptors.request.use(config => {
     const token = store.commonStore.token;
@@ -25,9 +25,11 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(async response => {
-    await sleep(1000);
+    if (process.env.NODE_ENV === 'development') {
+        await sleep(1000);
+    }
     const pagination = response.headers['pagination'];
-    if(pagination){
+    if (pagination) {
         response.data = new PaginatedResult(response.data, JSON.parse(pagination));
         return response as AxiosResponse<PaginatedResult<any>>
     }
@@ -78,12 +80,12 @@ const requests = {
 }
 
 const Activities = {
-    list: (params: URLSearchParams) => axios.get<PaginatedResult<Activity[]>>('/activities', {params}).then(responseBody),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Activity[]>>('/activities', { params }).then(responseBody),
     details: (id: string) => requests.get<Activity>(`/activities/${id}`),
     create: (activity: ActivityFormValues) => requests.post<void>('/activities', activity),
     update: (activity: ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`, activity),
     delete: (id: string) => requests.del<void>(`/activities/${id}`),
-    attend: (id: string) =>requests.post<void>(`/activities/${id}/attend`, {}),
+    attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {}),
 
 }
 
@@ -102,20 +104,20 @@ const Categories = {
 }
 
 const Profiles = {
-    get: (username:string) => requests.get<Profile>(`/profiles/${username}`),
-    uploadPhoto: (file:Blob) => {
+    get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+    uploadPhoto: (file: Blob) => {
         let formData = new FormData();
         formData.append('File', file);
         return axios.post<Photo>('photos', formData, {
-            headers: {'Content-Type': 'multipart/form-data'}
+            headers: { 'Content-Type': 'multipart/form-data' }
         });
     },
-    setMainPhoto: (id:string) => requests.post(`/photos/${id}/setMain`, {}),
-    deletePhoto: (id:string) => requests.del(`/photos/${id}`),
+    setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
+    deletePhoto: (id: string) => requests.del(`/photos/${id}`),
     updateProfile: (profile: Partial<Profile>) => requests.put<void>('/profiles', profile),
     updateFollowing: (username: string) => requests.post(`/follow/${username}`, {}),
     listFollowings: (username: string, predicate: string) => requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
-    listActivities: (username: string, predicate: string) =>requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
+    listActivities: (username: string, predicate: string) => requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
 }
 
 const agent = {

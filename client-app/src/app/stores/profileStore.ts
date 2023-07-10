@@ -38,7 +38,7 @@ export default class ProfileStore {
     }
 
     get isCurrentUser() {
-        if (store.userStore && this.profile) {
+        if (store.userStore.user && this.profile) {
             return store.userStore.user?.username === this.profile.username;
         }
         return false;
