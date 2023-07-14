@@ -15,7 +15,7 @@ primary_region = "den"
   Cloudinary__ApiKey="792922793581426"
 
 [[services]]
-  http_checks
+  http_checks = []
   processes=["app"]
 
 [http_service]
