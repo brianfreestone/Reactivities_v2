@@ -9,6 +9,15 @@ primary_region = "den"
 [build]
   image = "brianfreestone/reactivities:latest"
 
+[env]
+  ASPNETCORE_URLS="http://+:8080" 
+  Cloudinary__CloudName="djtiarvob"
+  Cloudinary__ApiKey="792922793581426"
+
+[[services]]
+  http_checks
+  processes=["app"]
+
 [http_service]
   internal_port = 8080
   force_https = true
