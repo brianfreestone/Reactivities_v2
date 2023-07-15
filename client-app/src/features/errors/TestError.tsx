@@ -19,7 +19,7 @@ export default function TestErrors() {
     }
 
     function handleUnauthorised() {
-        axios.get('/buggy/unauthorised').catch(err => console.log(err.response));
+        axios.get('/buggy/unauthorized').catch(err => console.log(err.response));
     }
 
     function handleBadGuid() {
